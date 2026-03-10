@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Food Order</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+margin:0;
+background:#f5f5f5;
+}
+
+header{
+background:#ff6b35;
+color:white;
+padding:15px;
+font-size:22px;
+text-align:center;
+}
+
+.container{
+padding:15px;
+max-width:900px;
+margin:auto;
+}
+
+.menu{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+}
+
+.card{
+background:white;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+overflow:hidden;
+text-align:center;
+}
+
+.card img{
+width:100%;
+height:120px;
+object-fit:cover;
+}
+
+.card h3{
+margin:10px 0 5px;
+}
+
+.price{
+color:#ff6b35;
+font-weight:bold;
+}
+
+.btn{
+background:#ff6b35;
+color:white;
+border:none;
+padding:8px 12px;
+margin:10px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.btn:hover{
+background:#ff5722;
+}
+
+.cart{
+margin-top:25px;
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+margin:5px 0;
+}
+
+.total{
+font-size:18px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.order-btn{
+width:100%;
+background:#28a745;
+padding:12px;
+border:none;
+color:white;
+font-size:18px;
+border-radius:8px;
+margin-top:10px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+🍔 Food Order
+</header>
+
+<div class="container">
+
+<div class="menu" id="menu"></div>
+
+<div class="cart">
+
+<h2>🛒 ตะกร้า</h2>
+
+<div id="cartItems"></div>
+
+<div class="total">
+รวม: <span id="total">0</span> บาท
+</div>
+
+<button class="order-btn" onclick="orderFood()">
+สั่งอาหาร
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const foods = [
+
+{
+name:"ข้าวผัด",
+price:60,
+img:"https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"
+},
+
+{
+name:"ผัดกระเพรา",
+price:70,
+img:"https://images.unsplash.com/photo-1604909052743-94e838986d24"
+},
+
+{
+name:"ก๋วยเตี๋ยว",
+price:50,
+img:"https://images.unsplash.com/photo-1555126634-323283e090fa"
+},
+
+{
+name:"ชาเย็น",
+price:35,
+img:"https://images.unsplash.com/photo-1551024601-bec78aea704b"
+}
+
+]
+
+let cart = []
+
+const menuDiv = document.getElementById("menu")
+
+foods.forEach((food,i)=>{
+
+menuDiv.innerHTML += `
+<div class="card">
+
+<img src="${food.img}">
+
+<h3>${food.name}</h3>
+
+<div class="price">${food.price} บาท</div>
+
+<button class="btn" onclick="addToCart(${i})">
+เพิ่ม
+</button>
+
+</div>
+`
+
+})
+
+function addToCart(i){
+
+cart.push(foods[i])
+
+renderCart()
+
+}
+
+function renderCart(){
+
+const cartDiv = document.getElementById("cartItems")
+
+cartDiv.innerHTML=""
+
+let total = 0
+
+cart.forEach(item=>{
+
+cartDiv.innerHTML += `
+<div class="cart-item">
+<span>${item.name}</span>
+<span>${item.price}</span>
+</div>
+`
+
+total += item.price
+
+})
+
+document.getElementById("total").innerText = total
+
+}
+
+function orderFood(){
+
+if(cart.length==0){
+
+alert("กรุณาเลือกอาหาร")
+
+return
+
+}
+
+alert("สั่งอาหารเรียบร้อย")
+
+cart=[]
+
+renderCart()
+
+}
+
+</script>
+
+</body>
+</html>
