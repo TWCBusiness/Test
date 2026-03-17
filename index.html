@@ -3,276 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wacoal - Receive Bill System</title>
+    <title>Wacoal - Receive_Bill</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Kanit', sans-serif;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            color: #334155;
-        }
+        body { font-family: 'Kanit', sans-serif; background-color: #f8f9fa; }
         .wacoal-pink { color: #E3004F; }
-        .bg-wacoal-pink { background: linear-gradient(135deg, #E3004F 0%, #ff1a6d 100%); }
-        .btn-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .btn-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(227, 0, 79, 0.3); }
-        
-        /* Modern Scrollbar */
-        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-        .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); }
-        
-        .loader {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #E3004F;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
+        .bg-wacoal-pink { background-color: #E3004F; }
+        .btn-hover:hover { background-color: #c20044; }
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loader { border-top-color: #E3004F; animation: spinner 1.5s linear infinite; }
+        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hide-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+        .hide-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex flex-col">
 
-    <div id="app" class="max-w-7xl mx-auto px-4 py-6 sm:py-10">
-        
-        <div id="loginPage" class="max-w-md mx-auto mt-10 sm:mt-20">
-            <div class="bg-white/80 backdrop-blur-xl rounded-3xl p-8 card-shadow border border-white">
-                <div class="text-center mb-10">
-                    <div class="inline-flex items-center justify-center w-40 h-20 bg-red-50 rounded-2xl mb-4">
-                        <span class="text-3xl font-bold wacoal-pink">WACOAL</span>
-                    </div>
-                    <h2 class="text-2xl font-bold text-slate-800">Receive Bill</h2>
-                    <p class="text-slate-500 mt-2">ระบบจัดการข้อมูลการรับบิล</p>
+    <div id="app" class="flex-grow flex flex-col items-center p-2 sm:p-4">
+        <div id="loginPage" class="w-full max-w-md glass-morphism rounded-2xl shadow-2xl p-6 sm:p-8 mt-10">
+            <div class="text-center mb-8">
+                <div class="flex justify-center mb-4">
+                    <div class="w-32 h-12 bg-gray-100 flex items-center justify-center rounded font-bold text-gray-400">WACOAL</div>
                 </div>
-
-                <form id="loginForm" class="space-y-5">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1.5 ml-1">รหัสร้านค้า (Username)</label>
-                        <input type="text" id="username" required 
-                            class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-red-500/10 focus:border-wacoal-pink outline-none transition-all"
-                            placeholder="กรุณากรอกรหัสร้านค้า">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1.5 ml-1">รหัสผ่าน (Password)</label>
-                        <input type="password" id="password" required 
-                            class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-4 focus:ring-red-500/10 focus:border-wacoal-pink outline-none transition-all"
-                            placeholder="•••">
-                    </div>
-                    <button type="submit" id="loginBtn"
-                        class="w-full bg-wacoal-pink text-white font-semibold py-4 rounded-xl btn-hover mt-4">
-                        เข้าสู่ระบบ
-                    </button>
-                </form>
-                <div id="loginError" class="mt-4 text-center text-red-500 text-sm hidden bg-red-50 py-2 rounded-lg">รหัสผ่านไม่ถูกต้อง</div>
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800">ระบบจัดการข้อมูลการรับบิล</h2>
             </div>
+            <form id="loginForm" class="space-y-5">
+                <input type="text" id="username" required class="w-full px-4 py-3 border rounded-lg outline-none" placeholder="Username">
+                <input type="password" id="password" required class="w-full px-4 py-3 border rounded-lg outline-none" placeholder="Password">
+                <button type="submit" class="w-full bg-wacoal-pink text-white py-3 rounded-lg btn-hover shadow-lg">เข้าสู่ระบบ</button>
+            </form>
+            <div id="loginError" class="mt-4 text-center text-red-500 hidden">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>
         </div>
 
-        <div id="dashboardPage" class="hidden space-y-6">
-            
-            <header class="sticky top-4 z-50 bg-white/80 backdrop-blur-md rounded-2xl card-shadow border border-white px-5 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div class="flex items-center gap-4 w-full sm:w-auto">
-                    <div class="w-12 h-12 bg-wacoal-pink rounded-xl flex items-center justify-center text-white font-bold text-xl">W</div>
+        <div id="dashboardPage" class="hidden w-full max-w-6xl flex flex-col space-y-4">
+            <div class="sticky top-0 z-50 bg-white/90 backdrop-blur-md rounded-xl shadow-md p-4 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-wacoal-pink rounded-full flex items-center justify-center text-white font-bold">W</div>
                     <div>
-                        <h1 class="text-lg font-bold text-slate-800 leading-tight" id="userDisplayName">User Name</h1>
-                        <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Receive_Bill</span>
+                        <h1 class="text-lg font-bold text-gray-800" id="userDisplayName">Welcome</h1>
+                        <p class="text-gray-500 text-xs">ข้อมูลการรับบิล (Receive Bill)</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0">
-                    <button onclick="fetchData()" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 rounded-lg transition-colors">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                        รีเฟรชข้อมูล
-                    </button>
-                    <button onclick="logout()" class="flex-1 sm:flex-none px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                        ออกจากระบบ
-                    </button>
+                <div class="flex space-x-4">
+                    <button onclick="fetchData()" class="text-wacoal-pink text-sm font-medium">🔄 รีเฟรช</button>
+                    <button onclick="logout()" class="text-gray-500 text-sm font-medium">ออกจากระบบ</button>
                 </div>
-            </header>
+            </div>
 
-            <div class="bg-white rounded-3xl card-shadow border border-white overflow-hidden">
-                <div class="overflow-x-auto custom-scroll max-h-[70vh]">
-                    <table class="w-full text-left border-separate border-spacing-0">
-                        <thead class="sticky top-0 z-20">
-                            <tr class="bg-slate-50/90 backdrop-blur">
-                                <th class="px-6 py-4 text-[13px] font-semibold text-slate-500 uppercase tracking-wider">Store Info</th>
-                                <th class="px-6 py-4 text-[13px] font-semibold text-slate-500 uppercase tracking-wider sticky left-0 bg-slate-50 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">Bill Number</th>
-                                <th class="px-6 py-4 text-[13px] font-semibold text-slate-500 uppercase tracking-wider">Date</th>
-                                <th class="px-6 py-4 text-[13px] font-semibold text-slate-500 uppercase tracking-wider text-center">Qty</th>
-                                <th class="px-6 py-4 text-[13px] font-semibold text-slate-500 uppercase tracking-wider text-right">Total Amount</th>
-                                <th class="px-6 py-4 text-[13px] font-semibold text-slate-500 uppercase tracking-wider">Received Date</th>
-                                <th class="px-6 py-4 text-[13px] font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-                                <th class="px-6 py-4 text-[13px] font-semibold text-slate-500 uppercase tracking-wider text-center">Action</th>
+            <div class="bg-white rounded-xl shadow-lg border overflow-hidden">
+                <div class="overflow-x-auto hide-scroll max-h-[75vh]">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead class="sticky top-0 z-40 bg-gray-100">
+                            <tr class="border-b">
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-600">Store Name</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-600">Store ID</th>
+                                <th class="px-6 py-4 text-sm font-bold text-gray-800 sticky left-0 bg-gray-100 border-r">Bill No.</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-600">Bill Date</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-600 text-center">QTY</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-600 text-right">Total</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-600">Received Date</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-600">Status</th>
+                                <th class="px-6 py-4 text-sm font-semibold text-gray-600 text-center">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="billTableBody" class="divide-y divide-slate-100">
-                            <tr>
-                                <td colspan="9" class="px-6 py-20 text-center">
-                                    <div class="flex flex-col items-center gap-3">
-                                        <div class="loader"></div>
-                                        <span class="text-slate-400 text-sm">กำลังโหลดข้อมูล...</span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="billTableBody" class="divide-y divide-gray-100"></tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 bg-slate-900 text-white text-sm rounded-2xl shadow-2xl transition-all duration-500 opacity-0 pointer-events-none z-[100] flex items-center gap-3">
-        <span id="toastIcon">✅</span>
-        <span id="toastMsg">บันทึกสำเร็จ</span>
-    </div>
-
-    <div id="globalLoader" class="fixed inset-0 bg-slate-900/20 backdrop-blur-sm hidden flex items-center justify-center z-[100]">
-        <div class="bg-white p-6 rounded-3xl shadow-2xl flex flex-col items-center gap-4">
-            <div class="loader !w-10 !h-10 !border-[4px]"></div>
-            <p class="font-medium text-slate-600">กำลังดำเนินการ...</p>
-        </div>
+    <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 px-6 py-3 bg-gray-800 text-white rounded-full shadow-2xl transition-all opacity-0 pointer-events-none z-[60]"></div>
+    <div id="globalLoader" class="fixed inset-0 bg-white/60 hidden flex items-center justify-center z-[100]">
+        <div class="loader rounded-full border-4 h-12 w-12"></div>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_S5fCo98f9he40ApSUnZks2XC-NB3OSmNBj-43K8MdNLMKtaV6oNLqFHqay_Yb0I/exec'; 
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_S5fCo98f9he40ApSUnZks2XC-NB3OSmNBj-43K8MdNLMKtaV6oNLqFHqay_Yb0I/exec';
         let currentUser = null;
         let allBills = [];
 
         // --- Auth Logic ---
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const u = document.getElementById('username').value.trim();
-            const p = document.getElementById('password').value.trim();
+            const userInp = document.getElementById('username').value.trim();
+            const passInp = document.getElementById('password').value.trim();
             
             toggleLoader(true);
             try {
-                // สำหรับ Demo หาก URL ยังไม่ตั้งค่า
-                if (u && p === "1234") {
-                    currentUser = { code: u, name: "พนักงานทดสอบ (Demo)", store: "S001" };
-                    showDashboard();
-                } else {
-                    const res = await fetch(`${SCRIPT_URL}?action=login&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
-                    const result = await res.json();
-                    if (result.success) {
-                        currentUser = result.user; 
-                        showDashboard();
-                    } else { showLoginError(); }
-                }
-            } catch (e) { showToast("⚠️ การเชื่อมต่อผิดพลาด", "error"); }
+                const res = await fetch(`${SCRIPT_URL}?action=login&username=${encodeURIComponent(userInp)}&password=${encodeURIComponent(passInp)}`);
+                const result = await res.json();
+                if (result.success) { currentUser = result.user; showDashboard(); }
+                else { showLoginError(); }
+            } catch (e) { showToast("การเชื่อมต่อผิดพลาด"); }
             finally { toggleLoader(false); }
         });
 
-        function showDashboard() {
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('dashboardPage').classList.remove('hidden');
-            document.getElementById('userDisplayName').innerText = `สวัสดี,${currentUser.name}`;
-            fetchData();
-        }
-
         async function fetchData() {
             const tbody = document.getElementById('billTableBody');
+            tbody.innerHTML = '<tr><td colspan="9" class="px-6 py-10 text-center text-sm text-gray-400">กำลังโหลด...</td></tr>';
             try {
-                // Demo Data
-                if (!SCRIPT_URL.includes('macros')) {
-                    allBills = Array.from({length: 10}, (_, i) => ({
-                        storeName: "Central Plaza", store: "S001", billNo: `INV-2400${i}`,
-                        billDate: "2024-03-01", qty: 24, total: 45000,
-                        receivedDate: i % 2 === 0 ? "2024-03-05" : "", status: i % 2 === 0 ? "Received" : "Pending"
-                    }));
-                } else {
-                    const res = await fetch(`${SCRIPT_URL}?action=getBills&store=${encodeURIComponent(currentUser.store)}`);
-                    const result = await res.json();
-                    allBills = result.data || [];
-                }
+                const res = await fetch(`${SCRIPT_URL}?action=getBills&store=${encodeURIComponent(currentUser.store)}`);
+                const result = await res.json();
+                allBills = result.data || [];
                 renderBills(allBills);
-            } catch (e) { showToast("❌ โหลดข้อมูลไม่สำเร็จ", "error"); }
+            } catch (e) { showToast("โหลดข้อมูลล้มเหลว"); }
         }
 
         function renderBills(bills) {
             const tbody = document.getElementById('billTableBody');
-            tbody.innerHTML = bills.map((bill, i) => {
-                const isDone = !!bill.receivedDate;
-                return `
-                    <tr class="group hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4">
-                            <div class="text-sm font-semibold text-slate-700">${bill.storeName}</div>
-                            <div class="text-xs text-slate-400">${bill.store}</div>
-                        </td>
-                        <td class="px-6 py-4 sticky left-0 bg-white group-hover:bg-slate-50 transition-colors z-10 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.05)]">
-                            <span class="text-sm font-bold wacoal-pink">${bill.billNo}</span>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-slate-600">${bill.billDate}</td>
-                        <td class="px-6 py-4 text-sm text-center font-medium">${bill.qty}</td>
-                        <td class="px-6 py-4 text-sm text-right font-bold text-slate-700">฿${Number(bill.total).toLocaleString()}</td>
-                        <td class="px-6 py-4">
-                            <input type="date" value="${formatDateForInput(bill.receivedDate)}" 
-                                id="date-${i}"
-                                class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-sm outline-none focus:border-red-400 transition-all">
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="px-3 py-1 text-[11px] font-bold rounded-full uppercase tracking-tighter ${isDone ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600'}">
-                                ${isDone ? 'Received' : 'Pending'}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <button onclick="updateData(${i})" class="bg-slate-900 text-white text-xs font-bold px-4 py-2 rounded-lg btn-hover">
-                                UPDATE
-                            </button>
-                        </td>
-                    </tr>
+            tbody.innerHTML = '';
+            bills.forEach((bill, index) => {
+                const inputVal = formatDateForInput(bill.receivedDate);
+                const displayVal = formatDateDisplay(bill.receivedDate);
+                const isReceived = !!bill.receivedDate;
+                
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition-colors group";
+                tr.innerHTML = `
+                    <td class="px-6 py-4 text-sm text-gray-800">${bill.storeName}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500">${bill.store}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-wacoal-pink sticky left-0 bg-white group-hover:bg-gray-50 border-r">${bill.billNo}</td>
+                    <td class="px-6 py-4 text-sm text-gray-500">${bill.billDate}</td>
+                    <td class="px-6 py-4 text-sm text-center">${bill.qty}</td>
+                    <td class="px-6 py-4 text-sm text-right font-semibold">฿${Number(bill.total).toLocaleString()}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col">
+                            <input type="date" value="${inputVal}" id="date-${index}" class="border rounded px-2 py-1 text-sm outline-none focus:border-wacoal-pink">
+                            <span class="text-[10px] text-gray-400 mt-1">${isReceived ? 'รับบิลวันที่ : ' + displayVal : 'ยังไม่ได้ระบุ'}</span>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 text-xs font-semibold rounded-full ${isReceived ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
+                            ${isReceived ? 'Received' : 'Pending'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <button onclick="updateData(${index})" class="bg-wacoal-pink text-white px-4 py-1.5 rounded text-xs font-bold uppercase btn-hover">Update</button>
+                    </td>
                 `;
-            }).join('');
+                tbody.appendChild(tr);
+            });
         }
 
-        async function updateData(idx) {
-            const dateVal = document.getElementById(`date-${idx}`).value;
-            if(!dateVal) return showToast("🗓️ กรุณาระบุวันที่", "error");
+        async function updateData(index) {
+            const bill = allBills[index];
+            const dateInput = document.getElementById(`date-${index}`);
+            const selectedDateStr = dateInput.value; // YYYY-MM-DD
+
+            if (!selectedDateStr) return showToast("⚠️ กรุณาระบุวันที่");
+
+            // --- Validation Logic ---
+            const [y, m, d] = selectedDateStr.split('-').map(Number);
+            const receivedDate = new Date(y, m - 1, d);
+            
+            const billDate = parseThaiDate(bill.billDate); // ตัดเฉพาะ 10 ตัวแรก
+            const today = new Date(); today.setHours(0,0,0,0);
+
+            if (billDate && receivedDate < billDate) {
+                showToast(`❌ วันที่รับห้ามก่อนวันที่บิล (${bill.billDate.substring(0,10)})`);
+                return;
+            }
+            if (receivedDate > today) {
+                showToast("❌ วันที่รับห้ามเกินวันที่ปัจจุบัน");
+                return;
+            }
 
             toggleLoader(true);
             try {
-                if (SCRIPT_URL.includes('macros')) {
-                    await fetch(SCRIPT_URL, {
-                        method: 'POST', mode: 'no-cors',
-                        body: JSON.stringify({ action: 'updateDate', billNo: allBills[idx].billNo, receivedDate: dateVal })
-                    });
-                }
-                showToast("✅ อัปเดตข้อมูลเรียบร้อย");
-                allBills[idx].receivedDate = dateVal;
-                renderBills(allBills);
-            } catch (e) { showToast("❌ บันทึกไม่สำเร็จ", "error"); }
+                await fetch(SCRIPT_URL, {
+                    method: 'POST', mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'updateDate', billNo: bill.billNo, receivedDate: selectedDateStr })
+                });
+                showToast("✅ บันทึกสำเร็จ");
+                setTimeout(fetchData, 1200);
+            } catch (e) { showToast("❌ บันทึกไม่สำเร็จ"); }
             finally { toggleLoader(false); }
         }
 
-        // --- Helpers ---
-        function formatDateForInput(d) {
-            if(!d) return "";
-            const date = new Date(d);
-            return isNaN(date.getTime()) ? "" : date.toISOString().split('T')[0];
+        // --- Helper Utils ---
+        function parseThaiDate(dateStr) {
+            if (!dateStr) return null;
+            const parts = dateStr.substring(0, 10).split('/');
+            if (parts.length !== 3) return null;
+            return new Date(parts[2], parts[1] - 1, parts[0]);
         }
 
-        function showToast(msg, type = "success") {
+        function formatDateDisplay(dateVal) {
+            if (!dateVal) return "-";
+            const d = new Date(dateVal);
+            if (isNaN(d.getTime())) return dateVal;
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            return `${day}/${month}/${d.getFullYear()}`;
+        }
+
+        function formatDateForInput(dateVal) {
+            if (!dateVal) return "";
+            const d = new Date(dateVal);
+            if (isNaN(d.getTime())) return "";
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${d.getFullYear()}-${month}-${day}`;
+        }
+
+        function toggleLoader(show) { document.getElementById('globalLoader').classList.toggle('hidden', !show); }
+        function showToast(msg) {
             const t = document.getElementById('toast');
-            document.getElementById('toastMsg').innerText = msg;
-            document.getElementById('toastIcon').innerText = type === "success" ? "✅" : "⚠️";
-            t.classList.replace('opacity-0', 'opacity-100');
-            setTimeout(() => t.classList.replace('opacity-100', 'opacity-0'), 3000);
+            t.innerText = msg; t.classList.remove('opacity-0'); t.classList.add('opacity-100');
+            setTimeout(() => { t.classList.add('opacity-0'); t.classList.remove('opacity-100'); }, 3000);
         }
-
-        function toggleLoader(show) {
-            document.getElementById('globalLoader').classList.toggle('hidden', !show);
+        function showDashboard() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('dashboardPage').classList.remove('hidden');
+            document.getElementById('userDisplayName').innerText = `สวัสดี, ${currentUser.name}`;
+            fetchData();
         }
-
+        function logout() { location.reload(); }
         function showLoginError() {
-            const err = document.getElementById('loginError');
-            err.classList.remove('hidden');
-            setTimeout(() => err.classList.add('hidden'), 3000);
-        }
-
-        function logout() {
-            location.reload();
+            document.getElementById('loginError').classList.remove('hidden');
+            setTimeout(() => document.getElementById('loginError').classList.add('hidden'), 3000);
         }
     </script>
 </body>
